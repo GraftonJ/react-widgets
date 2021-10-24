@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import SearchItem from './SearchItem'
+
 const Search = () => {
     const [term, setTerm] = useState('Zillow')
     const [debouncedTerm, setDebouncedTerm] = useState(term)
@@ -37,25 +39,7 @@ const Search = () => {
     }, [debouncedTerm])
 
     const renderedResults = results.map(result => {
-        return (
-            <div key={result.pageid} className="item">
-                <div className="right floated content">
-                    <a
-                        className="ui button"
-                        href={`https://en.wikipedia.org?curid=${result.pageid}`}
-                    >
-                        Go
-                    </a>
-                </div>
-                <div className="content">
-                    <div className="header">
-                        {result.title}
-                    </div>
-                    {/* Using dangerously set as example */}
-                    <span dangerouslySetInnerHTML={{ __html: result.snippet}} />
-                </div>
-            </div>
-        )
+        return <SearchItem key={result.pageid} result={result} />
     })
     return (
         <div>
