@@ -19,6 +19,7 @@ const Search = () => {
         }
     }, [term])
 
+    // Called on first render and then whenever 'debouncedTerm' is changed
     useEffect(() => {
         const search = async () => {
             const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
