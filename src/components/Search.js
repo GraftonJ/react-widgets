@@ -35,7 +35,9 @@ const Search = () => {
             })
             setResults(data.query.search)
         }
-        search()
+        if(debouncedTerm) {
+            search()
+        }
     }, [debouncedTerm])
 
     const renderedResults = results.map(result => {
