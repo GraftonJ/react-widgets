@@ -4,17 +4,24 @@ const Dropdown = ({ options, label, selected, onSelectedChange }) => {
     const [open, setOpen] = useState(false)
     const ref = useRef();
 
+    // Closes the dropdown if user clicks outside the dropdown list
+    // Checks current ref to see if click event was in the list itself
+    // in order to prevent setting open = false only to have the click handler
+    // on the list item component setting back to true (i.e. prevents bug keeping list open on item click)
     useEffect(() => {
-        document.body.addEventListener('click', (event) => {
+        const onBodyClick = (event) => {
             console.log('BODY event', event);
             if (ref.current.contains(event.target)) {
                 console.log('Contains ref, returning early');
                 return
             }
             setOpen(false)
-        },
-        { capture: true }
-        )
+        }
+        document.body.addEventListener('click', onBodyClick, { capture: true })
+        // Clears event listener on "component unmount"
+        return () => {
+            document.body.removeEventListener('click', onBodyClick, { capture: true })
+        }
     }, []);
     const renderOptions = options.map(option => {
         if(option.value === selected.value) {
