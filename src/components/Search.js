@@ -15,7 +15,7 @@ const Search = () => {
     useEffect(() => {
         const timerId = setTimeout(() => {
             setDebouncedTerm(term)
-        }, 1000)
+        }, 500);
         return () => {
             clearTimeout(timerId)
         }
@@ -23,7 +23,7 @@ const Search = () => {
 
     // Called on first render and then whenever 'debouncedTerm' is changed
     useEffect(() => {
-        const search = async () => {
+        const getData = async () => {
             const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
                 params: {
                     action: 'query',
@@ -33,11 +33,11 @@ const Search = () => {
                     srsearch: debouncedTerm
                 }
             })
-            setResults(data.query.search)
         }
-        if(debouncedTerm) {
-            search()
+        if (debouncedTerm) {
+            getData()
         }
+
     }, [debouncedTerm])
 
     const renderedResults = results.map(result => {
